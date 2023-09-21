@@ -1,9 +1,9 @@
 import { Component, useEffect, useState } from 'react';
-import { Button, Card, Col, Row } from 'react-bootstrap';
+import { Button, Card, Col, Container, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 
-export interface ArrObj {
+interface ArrObj {
   id: number;
   title: string;
   url: string;
@@ -20,7 +20,7 @@ export interface ArrObj {
 const News = () => {
   const params = useParams();
 
-  const [newsReport, setNewsReport] = useState<ArrObj[]>([]);
+  const [newsReport, setNewsReport] = useState<ArrObj | null>(null);
 
   const fetchNewsReport = async () => {
     try {
@@ -29,7 +29,7 @@ const News = () => {
       if (resp.ok) {
         const articlesToPrint = await resp.json();
         console.log(articlesToPrint);
-        setNewsReport(articlesToPrint.results);
+        setNewsReport(articlesToPrint);
       }
     } catch (error) {
       console.log(error);
@@ -39,28 +39,27 @@ const News = () => {
   useEffect(() => {
     fetchNewsReport();
   }, []);
+
   return (
-    <Component>
+    <Container>
       <Link to="/">
         <Button>Back to homepage</Button>
       </Link>
       {newsReport && (
         <Row>
-          {newsReport.map((story) => (
-            <Col md={4} lg={3} key={story.id}>
-              <Card className="my-5 mx-5">
-                <Card.Img variant="top" src={story.image_url} />
-                <Card.Body>
-                  <Card.Title>{story.title}</Card.Title>
-                  <Card.Text>{story.summary}</Card.Text>
-                  <p className="text-danger">{story.news_site}</p>
-                </Card.Body>
-              </Card>
-            </Col>
-          ))}
+          <Col md={4} lg={3}>
+            <Card className="my-5 mx-5">
+              <Card.Img variant="top" src={newsReport.image_url} />
+              <Card.Body>
+                <Card.Title>{newsReport.title}</Card.Title>
+                <Card.Text>{newsReport.summary}</Card.Text>
+                <p className="text-danger">{newsReport.news_site}</p>
+              </Card.Body>
+            </Card>
+          </Col>
         </Row>
       )}
-    </Component>
+    </Container>
   );
 };
 

@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Button, Card, Col, Container, Row } from 'react-bootstrap';
-import { Link, Navigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-export interface ArrObj {
+interface ArrObj {
   id: number;
   title: string;
   url: string;
@@ -50,7 +50,7 @@ const MainPage = () => {
                   <Card.Text>{story.summary}</Card.Text>
                   <p className="text-danger">{story.news_site}</p>
 
-                  <Link to={`${story.id} click here`}>
+                  <Link to={`/${story.id}`}>
                     <Button variant="primary">Keep reading</Button>
                   </Link>
                 </Card.Body>
